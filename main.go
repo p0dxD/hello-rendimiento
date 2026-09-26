@@ -27,7 +27,7 @@ var page = template.Must(template.New("page").Parse(`<!doctype html>
   code { background: #1c1d25; padding: 2px 8px; border-radius: 6px; color: #818cf8; }
 </style></head>
 <body><main>
-  <h1>👋 {{.Greeting}}</h1>
+  <h1>👋👋 {{.Greeting}} testing</h1>
   <p>Deployed by <b>rendimiento.ai</b> · version <code>{{.Version}}</code></p>
   <p>host <code>{{.Host}}</code> · up {{.Uptime}} · visit #{{.Visits}}</p>
 </main></body></html>`))
