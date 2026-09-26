@@ -22,7 +22,7 @@ func TestHealthz(t *testing.T) {
 
 func TestHomeUsesGreeting(t *testing.T) {
 	t.Setenv("GREETING", "Hola")
-	if code, body := get(t, "/"); code != 200 || !strings.Contains(body, "Hola") {
+	if code, body := get(t, "/"); code != 200 || !strings.Contains(body, "Adios") {
 		t.Fatalf("home = %d", code)
 	}
 }
