@@ -52,6 +52,12 @@ func handler() http.Handler {
 		})
 	})
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
+		// DEMO (to be reverted): healthy for 90 s after start, then broken,
+		// to show release verification rolling this release back.
+		if time.Since(started) > 90*time.Second {
+			http.Error(w, "simulated failure", http.StatusInternalServerError)
+			return
+		}
 		fmt.Fprintln(w, "ok")
 	})
 	mux.HandleFunc("GET /api/info", func(w http.ResponseWriter, r *http.Request) {
