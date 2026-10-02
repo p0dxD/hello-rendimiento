@@ -22,3 +22,19 @@ services:
   test:
     command: go test ./...
     image: golang:1.24
+# Post-deploy tasks run against each new release once it is live, inside
+# its namespace; a failing required one rolls the release back.
+tasks:
+- name: smoke
+  stage: post-deploy
+  image: curlimages/curl:8.10.1
+  command: >-
+    curl -fsS http://hello-rendimiento/healthz &&
+    curl -fsS http://hello-rendimiento/api/info | tee /dev/stderr | grep -q '"version"' &&
+    echo "smoke test passed"
+- name: env-check
+  stage: post-deploy
+  service: hello-rendimiento
+  optional: true
+  command: >-
+    test -n "$DATABASE_URL" && echo "DATABASE_URL is set (from needs: postgres)"
