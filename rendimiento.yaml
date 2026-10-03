@@ -25,6 +25,22 @@ services:
 # Post-deploy tasks run against each new release once it is live, inside
 # its namespace; a failing required one rolls the release back.
 tasks:
+- name: db-ready
+  stage: pre-deploy
+  image: postgres:17-alpine
+  secretEnv:
+    DATABASE_URL: postgres-credentials/uri
+  command: >-
+    pg_isready -d "$DATABASE_URL" -t 10 &&
+    psql "$DATABASE_URL" -tAc "select 'database reachable before the rollout, ' || version()"
+- name: announce
+  stage: pre-deploy
+  service: hello-rendimiento
+  optional: true
+  after: [db-ready]
+  command: >-
+    echo "release $RENDIMIENTO_RELEASE ($GIT_SHA) is about to roll out" &&
+    echo "running in the new image, with DATABASE_URL ${DATABASE_URL:+set}"
 - name: smoke
   stage: post-deploy
   image: curlimages/curl:8.10.1
