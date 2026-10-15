@@ -54,3 +54,6 @@ tasks:
   optional: true
   command: >-
     test -n "$DATABASE_URL" && echo "DATABASE_URL is set (from needs: postgres)"
+# Traces for rendimiento's Universe: Go has no agent, so tracing.go sends
+# them with the OpenTelemetry SDK, to where the platform says.
+observe: true
