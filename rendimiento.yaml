@@ -13,7 +13,7 @@ services:
   name: hello-rendimiento
   needs:
   - postgres
-  - service: jobsentry/ollama-internal
+  - service: ai/ollama
     env: OLLAMA_HOST
   path: .
   port: 8080
